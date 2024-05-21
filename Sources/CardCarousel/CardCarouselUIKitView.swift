@@ -13,8 +13,17 @@ final class CardCarouselUIKitView<Cell: UICollectionViewCell, Item>: CardCarouse
     
     private var cellRegistration: Handler?
     
-    private var subscriptions = if #available(iOS 13, *) { Set<AnyCancellable>() } else { fatalError() }
+    private var _subscriptions: Any?
     
+    @available(iOS 13, *)
+    private var subscriptions: Set<AnyCancellable> {
+        get {
+            return (_subscriptions as? Set<AnyCancellable>)!
+        } set {
+            _subscriptions = newValue
+        }
+    }
+
     init(frame: CGRect = .zero, data: [Item] = [], cellRegistration: Handler? = nil) {
         super.init(frame: frame)
         
